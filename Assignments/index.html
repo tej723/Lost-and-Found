@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lost and Found</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+ 
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">🔍 Lost & Found</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+        <div class="navbar-nav align-items-center">
+          <input id="searchBar" class="form-control me-2" type="search" placeholder="Search items..." aria-label="Search">
+          <button id="toggleDarkMode" class="btn btn-outline-light ms-2">🌙</button>
+          <a href="login.html" class="btn btn-outline-light ms-2">Login</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+ 
+  <div class="container mt-4" id="cardContainer">
+    <div class="row" id="cards">
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="keys.jpg" class="card-img-top" alt="Keys">
+          <div class="card-body">
+            <h5 class="card-title">Keys</h5>
+            <p class="card-text">Found near CC.</p>
+            <p class="card-text"><strong>Contact:</strong> Kartik - 9876543210</p>
+            <button class="btn btn-danger me-2">Delete</button>
+            <button class="btn btn-secondary" onclick="openModal('Keys', 'Found near CC.', 'Kartik', '9876543210')">View</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="wallet.jpg" class="card-img-top" alt="Wallet">
+          <div class="card-body">
+            <h5 class="card-title">Wallet</h5>
+            <p class="card-text">Found near Lecture Hall Complex.</p>
+            <p class="card-text"><strong>Contact:</strong> Aditi - 9123456780</p>
+            <button class="btn btn-danger me-2">Delete</button>
+            <button class="btn btn-secondary" onclick="openModal('Wallet', 'Found near Lecture Hall Complex.', 'Aditi', '9123456780')">View</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="watch.webp" class="card-img-top" alt="Watch">
+          <div class="card-body">
+            <h5 class="card-title">Watch</h5>
+            <p class="card-text">Found at Hall 2 canteen.</p>
+            <p class="card-text"><strong>Contact:</strong> Rishi - 9012345678</p>
+            <button class="btn btn-danger me-2">Delete</button>
+            <button class="btn btn-secondary" onclick="openModal('Watch', 'Found at Hall 2 canteen.', 'Rishi', '9012345678')">View</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="bag.webp" class="card-img-top" alt="Bag">
+          <div class="card-body">
+            <h5 class="card-title">Bag</h5>
+            <p class="card-text">Found in Library.</p>
+            <p class="card-text"><strong>Contact:</strong> Sneha - 9988776655</p>
+            <button class="btn btn-danger me-2">Delete</button>
+            <button class="btn btn-secondary" onclick="openModal('Bag', 'Found in Library.', 'Sneha', '9988776655')">View</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="bottle.webp" class="card-img-top" alt="Bottle">
+          <div class="card-body">
+            <h5 class="card-title">Bottle</h5>
+            <p class="card-text">Found outside CSE building.</p>
+            <p class="card-text"><strong>Contact:</strong> Nikhil - 9765432109</p>
+            <button class="btn btn-danger me-2">Delete</button>
+            <button class="btn btn-secondary" onclick="openModal('Bottle', 'Found outside CSE building.', 'Nikhil', '9765432109')">View</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="earphones.jpg" class="card-img-top" alt="Earphones">
+          <div class="card-body">
+            <h5 class="card-title">Earphones</h5>
+            <p class="card-text">Found in Lecture Hall 7.</p>
+            <p class="card-text"><strong>Contact:</strong> Priya - 9345612890</p>
+            <button class="btn btn-danger me-2">Delete</button>
+            <button class="btn btn-secondary" onclick="openModal('Earphones', 'Found in Lecture Hall 7.', 'Priya', '9345612890')">View</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ 
+  <button class="btn btn-primary add-item-btn" onclick="openAddItemDialog()">+ Add Item</button>
+
+
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="itemModalLabel">Item Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Item:</strong> <span id="modalItemName"></span></p>
+          <p><strong>Found At:</strong> <span id="modalFoundLocation"></span></p>
+          <p><strong>Contact:</strong> <span id="modalContactName"></span> - <span id="modalPhone"></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addItemModalLabel">Add New Item</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addItemForm">
+            <div class="mb-3">
+              <label class="form-label">Item Name</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Found Location</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Contact Name</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Phone Number</label>
+              <input type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Item Image (URL or name)</label>
+              <input type="text" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Add (not working yet)</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
