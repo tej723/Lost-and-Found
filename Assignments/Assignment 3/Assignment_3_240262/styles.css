@@ -1,0 +1,118 @@
+body {
+  background-color: #dfdbde;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card img {
+  height: 200px;
+  width: 100%;
+  object-fit: contain;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+}
+
+.card-img-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  border-radius: 15px;
+}
+
+input, .form-control {
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+}
+
+input:focus, .form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+button {
+  border-radius: 10px !important;
+}
+
+.btn-primary, .btn-success {
+  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover, .btn-success:hover {
+  transform: scale(1.02);
+}
+
+.navbar {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+}
+
+#cardContainer > .btn {
+  border-radius: 50px;
+  padding: 10px 25px;
+  font-weight: 500;
+  margin-top: 30px;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+.navbar-custom {
+  background-color: #0077cc;
+}
+
+.dark-mode .navbar-custom {
+  background-color: #1f1f1f;
+}
+
+.add-item-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 50px;
+}
+
+@media (max-width: 576px) {
+  .navbar-brand {
+    font-size: 18px;
+  }
+
+  .btn {
+    font-size: 14px;
+  }
+
+  .card-title {
+    font-size: 18px;
+  }
+
+  .card-text {
+    font-size: 14px;
+  }
+
+  .add-item-btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
