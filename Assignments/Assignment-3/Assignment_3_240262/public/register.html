@@ -53,7 +53,8 @@
       const username = e.target.username.value;
       const password = e.target.password.value;
 
-      const res = await fetch('https://www.google.com/search?q=https://lost-and-found-7rmi-itu84xxxt-tejs-projects-c90dedd2.vercel.app/register', {
+      // FIXED THE URL HERE
+      const res = await fetch('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
