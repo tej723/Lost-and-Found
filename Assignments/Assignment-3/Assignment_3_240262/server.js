@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 
-const JWT_SECRET = 'your-super-secret-key-that-is-long-and-random';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 
 const pool = new Pool({
@@ -156,8 +156,8 @@ app.delete('/items/:id', authenticateToken, async (req, res) => {
 
 
 
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+
 
 });
+
 
