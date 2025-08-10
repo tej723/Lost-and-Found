@@ -13,13 +13,12 @@ const JWT_SECRET = 'your-super-secret-key-that-is-long-and-random';
 
 
 const pool = new Pool({
-  user: 'lostandfound_comefixthy',
-  host: '5vggh.h.filess.io',
-  database: 'lostandfound_comefixthy',
-  password: '0ba8e43123e8244dfe535585869c639b8fd248dd',
-  port: 5433,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 });
-
 
 app.get('/items', async (req, res) => {
   try {
@@ -158,4 +157,5 @@ app.delete('/items/:id', authenticateToken, async (req, res) => {
 
 app.listen(3000, () => {
   console.log('Server running on port 3000');
+
 });
