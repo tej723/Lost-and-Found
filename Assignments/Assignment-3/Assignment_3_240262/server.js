@@ -3,6 +3,7 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,17 @@ const pool = new Pool({
   database: process.env.DB_DATABASE,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
+});
+
+app.get('/debug-ls', (req, res) => {
+  const path = __dirname;
+  fs.readdir(path, (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: 'Unable to read directory' });
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(files));
+  });
 });
 
 app.get('/items', async (req, res) => {
@@ -155,6 +167,7 @@ app.delete('/items/:id', authenticateToken, async (req, res) => {
 });
 
 module.exports = app;
+
 
 
 
