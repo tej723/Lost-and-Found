@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
             phone
         };
 
-        fetch('http://localhost:3000/items', {
+        fetch('lost-and-found-7rmi-itu84xxxt-tejs-projects-c90dedd2.vercel.app/items', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ function openAddItemDialog() {
 }
 
 function loadItems() {
-    fetch('http://localhost:3000/items')
+    fetch('lost-and-found-7rmi-itu84xxxt-tejs-projects-c90dedd2.vercel.app/items')
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById('cards');
@@ -137,7 +137,7 @@ function deleteItem(id) {
     }
 
     if (confirm('Are you sure you want to delete this item?')) {
-        fetch(`http://localhost:3000/items/${id}`, {
+        fetch(`lost-and-found-7rmi-itu84xxxt-tejs-projects-c90dedd2.vercel.app/items/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -155,4 +155,5 @@ function deleteItem(id) {
             alert(err.message);
         });
     }
+
 }
