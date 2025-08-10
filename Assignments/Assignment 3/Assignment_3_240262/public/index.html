@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lost and Found</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">🔍 Lost & Found</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+        <div class="navbar-nav align-items-center">
+          <input id="searchBar" class="form-control me-2" type="search" placeholder="Search items..." aria-label="Search">
+          <button id="toggleDarkMode" class="btn btn-outline-light ms-2">🌙</button>
+          <a href="login.html" id="loginLogoutLink" class="btn btn-outline-light ms-2">Login</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4" id="cardContainer">
+    <div class="row" id="cards">
+      </div>
+  </div>
+
+  <button class="btn btn-primary add-item-btn" onclick="openAddItemDialog()">+ Add Item</button>
+
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="itemModalLabel">Item Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Item:</strong> <span id="modalItemName"></span></p>
+          <p><strong>Found At:</strong> <span id="modalFoundLocation"></span></p>
+          <p><strong>Contact:</strong> <span id="modalContactName"></span> - <span id="modalPhone"></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addItemModalLabel">Add New Item</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addItemForm">
+            <div class="mb-3">
+              <label class="form-label">Item Name</label>
+              <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Found Location</label>
+              <input type="text" class="form-control" name="location" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Contact Name</label>
+              <input type="text" class="form-control" name="contact_name" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Phone Number</label>
+              <input type="text" class="form-control" name="phone" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Item Image (URL or name)</label>
+              <input type="text" class="form-control" name="image">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Add Item</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
