@@ -3,13 +3,14 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
 const app = express();
 
 // --- Middleware ---
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public')); // This serves your frontend files
+app.use(express.static(path.join(__dirname, 'public')));// This serves your frontend files
 
 // --- Environment Variables ---
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -109,3 +110,4 @@ app.delete('/items/:id', authenticateToken, async (req, res) => {
 
 // This is the crucial line that allows Vercel to use your server
 module.exports = app;
+
