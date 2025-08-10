@@ -154,6 +154,9 @@ app.delete('/items/:id', authenticateToken, async (req, res) => {
   }
 });
 
+module.exports = app;
+
+
 
 
 
