@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
             phone
         };
 
-        fetch('https://www.google.com/search?q=https://lost-and-found-7rmi-itu84xxxt-tejs-projects-c90dedd2.vercel.app/items', {
+        fetch('/items', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -157,4 +157,5 @@ function deleteItem(id) {
     }
 
 }
+
 
