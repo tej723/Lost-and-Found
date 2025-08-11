@@ -97,12 +97,20 @@ function openAddItemDialog() {
 }
 
 function loadItems() {
-    // FIXED THE URL HERE
     fetch('/items')
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById('cards');
-            container.innerHTML = '';
+            container.innerHTML = ''; // Clear previous items
+
+            // This 'if' statement is the new, important check
+            if (!Array.isArray(data)) {
+              console.error("Received an error or non-array data from server:", data);
+              // Optionally, display an error message to the user on the page
+              // container.innerHTML = '<p class="text-danger">Could not load items.</p>';
+              return; // Stop the function
+            }
+
             const token = localStorage.getItem('authToken');
 
             data.forEach(item => {
@@ -127,9 +135,13 @@ function loadItems() {
                 container.appendChild(col);
             });
         })
-        .catch(err => console.error('Error fetching items:', err));
+        .catch(err => {
+          console.error('Error fetching items:', err)
+          const container = document.getElementById('cards');
+          // Display a network error message to the user
+          container.innerHTML = '<p class="text-danger">A network error occurred. Could not load items.</p>';
+        });
 }
-
 function deleteItem(id) {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -158,3 +170,4 @@ function deleteItem(id) {
         });
     }
 }
+
