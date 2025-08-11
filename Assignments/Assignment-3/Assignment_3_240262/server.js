@@ -12,63 +12,70 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from public folder
+// Serve static frontend from public/
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Database connection
+// PostgreSQL connection
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production'
-    ? { rejectUnauthorized: false }
-    : false
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
-// ------------------ AUTH ROUTES ------------------
+// Middleware for authentication
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.sendStatus(401);
 
-// Register
-app.post('/register', async (req, res) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
+
+// ======================== AUTH ROUTES ========================
+
+// Register new user
+app.post('/api/register', async (req, res) => {
   const { username, password } = req.body;
+  if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
+
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    await pool.query(
-      'INSERT INTO users (username, password) VALUES ($1, $2)',
-      [username, hashedPassword]
-    );
+    await pool.query('INSERT INTO users (username, password) VALUES ($1, $2)', [username, hashedPassword]);
     res.json({ message: 'User registered successfully' });
   } catch (err) {
-    console.error('Error registering user:', err);
+    console.error('Registration error:', err);
     res.status(500).json({ error: 'Registration failed' });
   }
 });
 
-// Login
-app.post('/login', async (req, res) => {
+// Login user
+app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
+  if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
+
   try {
-    const result = await pool.query(
-      'SELECT * FROM users WHERE username = $1',
-      [username]
-    );
-    if (result.rows.length === 0) {
-      return res.status(400).json({ error: 'Invalid credentials' });
-    }
+    const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+    if (result.rows.length === 0) return res.status(401).json({ error: 'Invalid credentials' });
+
     const user = result.rows[0];
     const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return res.status(400).json({ error: 'Invalid credentials' });
-    }
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    if (!match) return res.status(401).json({ error: 'Invalid credentials' });
+
+    const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token });
   } catch (err) {
-    console.error('Error logging in:', err);
+    console.error('Login error:', err);
     res.status(500).json({ error: 'Login failed' });
   }
 });
 
-// ------------------ ITEMS ROUTES ------------------
+// ======================== ITEM ROUTES ========================
 
 // Get all items
-app.get(['/items', '/api/items'], async (req, res) => {
+app.get('/api/items', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM items');
     res.json(result.rows);
@@ -78,8 +85,8 @@ app.get(['/items', '/api/items'], async (req, res) => {
   }
 });
 
-// Add new item (protected)
-app.post(['/items', '/api/items'], async (req, res) => {
+// Add item (protected)
+app.post('/api/items', authenticateToken, async (req, res) => {
   const { name, description, status, location, image, contact_name, phone } = req.body;
   try {
     const result = await pool.query(
@@ -94,7 +101,7 @@ app.post(['/items', '/api/items'], async (req, res) => {
 });
 
 // Delete item (protected)
-app.delete(['/items/:id', '/api/items/:id'], async (req, res) => {
+app.delete('/api/items/:id', authenticateToken, async (req, res) => {
   try {
     await pool.query('DELETE FROM items WHERE id = $1', [req.params.id]);
     res.json({ message: 'Item deleted' });
@@ -104,7 +111,7 @@ app.delete(['/items/:id', '/api/items/:id'], async (req, res) => {
   }
 });
 
-// ------------------ FRONTEND ROUTE ------------------
+// ======================== FALLBACK FOR FRONTEND ========================
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -112,7 +119,7 @@ app.get('*', (req, res) => {
 // Export for Vercel
 module.exports = app;
 
-// Local dev server
+// Run locally
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
