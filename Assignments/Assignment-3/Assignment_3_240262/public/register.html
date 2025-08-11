@@ -54,7 +54,7 @@
       const password = e.target.password.value;
 
       // FIXED THE URL HERE
-      const res = await fetch('/register', {
+      const res = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -72,5 +72,6 @@
   </script>
 </body>
 </html>
+
 
 
