@@ -7,12 +7,10 @@ const path = require('path');
 
 const app = express();
 
-// --- Middleware ---
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));// This serves your frontend files
+app.use(express.static(path.join(__dirname, 'public')));
 
-// --- Environment Variables ---
 const JWT_SECRET = process.env.JWT_SECRET;
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -24,7 +22,7 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
-// --- API Routes ---
+
 app.get('/items', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM lostandfound.items ORDER BY id DESC');
@@ -34,6 +32,8 @@ app.get('/items', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch items' });
   }
 });
+
+// ... (rest of your routes are fine) ...
 
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
@@ -107,9 +107,4 @@ app.delete('/items/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// This is the crucial line that allows Vercel to use your server
 module.exports = app;
-
-
-
-
