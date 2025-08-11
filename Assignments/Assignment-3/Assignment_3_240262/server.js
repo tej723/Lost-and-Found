@@ -21,10 +21,9 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
   ssl: {
-    rejectUnauthorized: false // Use this object for SSL
+    rejectUnauthorized: false
   }
 });
-
 // --- API Routes ---
 app.get('/items', async (req, res) => {
   try {
@@ -110,6 +109,7 @@ app.delete('/items/:id', authenticateToken, async (req, res) => {
 
 // This is the crucial line that allows Vercel to use your server
 module.exports = app;
+
 
 
 
