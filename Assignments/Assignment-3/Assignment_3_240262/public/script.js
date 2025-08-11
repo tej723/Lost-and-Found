@@ -20,12 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     loadItems();
 
-    // Event listener for dark mode toggle
     document.getElementById('toggleDarkMode').addEventListener('click', function() {
         document.body.classList.toggle('dark-mode');
     });
 
-    // Event listener for search bar
     document.getElementById('searchBar').addEventListener('input', function(e) {
         const query = e.target.value.toLowerCase();
         const cards = document.querySelectorAll('#cards .card');
@@ -36,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Event listener for the Add Item form submission
     document.getElementById('addItemForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const token = localStorage.getItem('authToken');
@@ -58,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
             phone
         };
 
-        fetch('/items', { // This URL was already correct
+        fetch('/api/items', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,17 +94,16 @@ function openAddItemDialog() {
 }
 
 function loadItems() {
-    fetch('/items')
+    fetch('/api/items')
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById('cards');
             container.innerHTML = ''; 
 
-            // This 'if' statement checks if the data is a valid array
             if (!Array.isArray(data)) {
               console.error("Error: Expected an array of items, but received:", data);
               container.innerHTML = '<p class="text-danger">Could not load items from the server.</p>';
-              return; // Stop the function
+              return;
             }
 
             const token = localStorage.getItem('authToken');
@@ -139,6 +135,7 @@ function loadItems() {
           container.innerHTML = '<p class="text-danger">A network error occurred. Could not load items.</p>';
         });
 }
+
 function deleteItem(id) {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -147,8 +144,7 @@ function deleteItem(id) {
     }
 
     if (confirm('Are you sure you want to delete this item?')) {
-        // FIXED THE URL HERE
-        fetch(`/items/${id}`, {
+        fetch(`/api/items/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -167,5 +163,3 @@ function deleteItem(id) {
         });
     }
 }
-
-
