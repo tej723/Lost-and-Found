@@ -93,17 +93,18 @@ function openAddItemDialog() {
     addModal.show();
 }
 
+// Load items
 function loadItems() {
     fetch('/api/items')
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById('cards');
-            container.innerHTML = ''; 
+            container.innerHTML = '';
 
             if (!Array.isArray(data)) {
-              console.error("Error: Expected an array of items, but received:", data);
-              container.innerHTML = '<p class="text-danger">Could not load items from the server.</p>';
-              return;
+                console.error("Received an error or non-array data from server:", data);
+                container.innerHTML = '<p class="text-danger">Could not load items from the server.</p>';
+                return;
             }
 
             const token = localStorage.getItem('authToken');
@@ -130,11 +131,56 @@ function loadItems() {
             });
         })
         .catch(err => {
-          console.error('Error fetching items:', err);
-          const container = document.getElementById('cards');
-          container.innerHTML = '<p class="text-danger">A network error occurred. Could not load items.</p>';
+            console.error('Error fetching items:', err);
+            const container = document.getElementById('cards');
+            container.innerHTML = '<p class="text-danger">A network error occurred. Could not load items.</p>';
         });
 }
+
+// Add item
+document.getElementById('addItemForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        alert('You must be logged in to add items.');
+        return;
+    }
+
+    const inputs = this.querySelectorAll('input');
+    const [name, location, contactName, phone, image] = Array.from(inputs).map(input => input.value);
+
+    const newItem = {
+        name,
+        description: `Found at ${location}`,
+        status: "found",
+        location,
+        image,
+        contact_name: contactName,
+        phone
+    };
+
+    fetch('/api/items', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(newItem)
+    })
+    .then(res => {
+        if (!res.ok) { throw new Error('Failed to add item. Check server logs.'); }
+        return res.json();
+    })
+    .then(() => {
+        loadItems();
+        bootstrap.Modal.getInstance(document.getElementById('addItemModal')).hide();
+        this.reset();
+    })
+    .catch(err => {
+        console.error('Failed to add item:', err);
+        alert(err.message);
+    });
+});
 
 function deleteItem(id) {
     const token = localStorage.getItem('authToken');
