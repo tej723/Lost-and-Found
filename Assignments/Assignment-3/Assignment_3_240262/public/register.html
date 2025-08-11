@@ -48,30 +48,32 @@
     <div id="registerFeedback" class="text-center text-danger mt-2"></div>
   </div>
   <script>
-    document.getElementById('registerForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const username = e.target.username.value;
-      const password = e.target.password.value;
+  document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const username = e.target.username.value;
+    const password = e.target.password.value;
 
-      // FIXED THE URL HERE
-      const res = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-
-      const data = await res.json();
-      const feedback = document.getElementById('registerFeedback');
-      if (data.message) {
-        alert('Registered successfully!');
-        window.location.href = 'login.html';
-      } else {
-        feedback.textContent = data.error || 'Registration failed';
-      }
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
     });
-  </script>
+
+    const data = await res.json();
+    const feedback = document.getElementById('registerFeedback');
+
+    if (data.message) {
+      alert('Registered successfully!');
+      window.location.href = 'login.html';
+    } else {
+      feedback.textContent = data.error || 'Registration failed';
+    }
+  });
+</script>
+
 </body>
 </html>
+
 
 
 
