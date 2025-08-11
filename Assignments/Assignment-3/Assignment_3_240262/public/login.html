@@ -48,31 +48,32 @@
     <div id="loginFeedback" class="text-center text-danger mt-2"></div>
   </div>
   <script>
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const username = e.target.username.value;
-      const password = e.target.password.value;
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const username = e.target.username.value;
+    const password = e.target.password.value;
 
-      // FIXED THE URL HERE
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-
-      const data = await res.json();
-      const feedback = document.getElementById('loginFeedback');
-
-      if (data.token) {
-        localStorage.setItem('authToken', data.token);
-        alert('Login successful!');
-        window.location.href = 'index.html';
-      } else {
-        feedback.textContent = data.error || 'Login failed';
-      }
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
     });
-  </script>
+
+    const data = await res.json();
+    const feedback = document.getElementById('loginFeedback');
+
+    if (data.token) {
+      localStorage.setItem('authToken', data.token);
+      alert('Login successful!');
+      window.location.href = 'index.html';
+    } else {
+      feedback.textContent = data.error || 'Login failed';
+    }
+  });
+</script>
+
 </body>
 </html>
+
 
 
