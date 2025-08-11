@@ -101,18 +101,16 @@ function loadItems() {
         .then(response => response.json())
         .then(data => {
             const container = document.getElementById('cards');
-            container.innerHTML = ''; // Clear previous items
+            container.innerHTML = ''; 
 
-            // This 'if' statement is the new, important check
+            // This 'if' statement checks if the data is a valid array
             if (!Array.isArray(data)) {
-              console.error("Received an error or non-array data from server:", data);
-              // Optionally, display an error message to the user on the page
-              // container.innerHTML = '<p class="text-danger">Could not load items.</p>';
+              console.error("Error: Expected an array of items, but received:", data);
+              container.innerHTML = '<p class="text-danger">Could not load items from the server.</p>';
               return; // Stop the function
             }
 
             const token = localStorage.getItem('authToken');
-
             data.forEach(item => {
                 const col = document.createElement('div');
                 col.className = 'col-md-4 mb-4';
@@ -136,9 +134,8 @@ function loadItems() {
             });
         })
         .catch(err => {
-          console.error('Error fetching items:', err)
+          console.error('Error fetching items:', err);
           const container = document.getElementById('cards');
-          // Display a network error message to the user
           container.innerHTML = '<p class="text-danger">A network error occurred. Could not load items.</p>';
         });
 }
@@ -170,4 +167,5 @@ function deleteItem(id) {
         });
     }
 }
+
 
