@@ -117,7 +117,7 @@ app.delete('/api/items/:id', authenticateToken, async (req, res) => {
 });
 
 // ======================== FALLBACK FOR FRONTEND ========================
-app.get('*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
