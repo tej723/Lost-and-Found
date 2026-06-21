@@ -69,7 +69,7 @@ body {
 }
 
 .search-input {
-  padding-left: 3.5rem; /* Increased from 2.6rem so text doesn't overlap the icon */
+  padding-left: 50px !important; /* The !important forces this to win every time */
   border-radius: 50px !important;
   border: none;
   height: 48px;
