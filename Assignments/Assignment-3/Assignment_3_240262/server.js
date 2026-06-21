@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { Pool } = require('pg');
 const path = require('path');
 
@@ -17,24 +17,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // PostgreSQL connection
 const pool = new Pool({
-  connectionString: process.env.POSTGRES_URL,
+ connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
-// Add this temporarily to force table creation
 pool.query(`
-  CREATE TABLE IF NOT EXISTS items (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    status VARCHAR(50),
-    location VARCHAR(255),
-    image TEXT,
-    contact_name VARCHAR(255),
-    phone VARCHAR(50)
-  )
-`).then(() => console.log("Items table checked/created"))
-  .catch(err => console.error("Table creation error:", err));
+  CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, username VARCHAR(255) UNIQUE NOT NULL, password VARCHAR(255) NOT NULL);
+  CREATE TABLE IF NOT EXISTS items (id SERIAL PRIMARY KEY, name VARCHAR(255) NOT NULL, description TEXT, status VARCHAR(50), location VARCHAR(255), image TEXT, contact_name VARCHAR(255), phone VARCHAR(50));
+`).then(() => console.log("Tables created successfully")).catch(err => console.error(err));
 
 // Middleware for authentication
 function authenticateToken(req, res, next) {
