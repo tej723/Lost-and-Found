@@ -21,6 +21,21 @@ const pool = new Pool({
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
+// Add this temporarily to force table creation
+pool.query(`
+  CREATE TABLE IF NOT EXISTS items (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    status VARCHAR(50),
+    location VARCHAR(255),
+    image TEXT,
+    contact_name VARCHAR(255),
+    phone VARCHAR(50)
+  )
+`).then(() => console.log("Items table checked/created"))
+  .catch(err => console.error("Table creation error:", err));
+
 // Middleware for authentication
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
